@@ -3,7 +3,6 @@ from distutils.extension import Extension
 from Cython.Distutils import build_ext
 
 ext_modules = [
-               Extension("pyintegrator", ["src/pyintegrator.pyx"]),
                Extension("integrator", ["src/integrator.pyx"]),
                Extension("neuron_models", ["src/neuron_models.pyx"])
                ]

@@ -37,3 +37,6 @@ nosetests.xml
 # cython generated transcriptions
 *.html
 *.c
+
+# vim swap files
+*.swp
