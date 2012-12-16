@@ -1,3 +1,6 @@
+# self-coupled SGY neuron model (Golomb 2006). With reference parameters
+# exhibits intrinsic bursting behaviour
+
 from integrator cimport *
 cimport cython
 
