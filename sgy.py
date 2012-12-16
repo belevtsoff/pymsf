@@ -1,3 +1,5 @@
+# setup script for SGY (golomb 2006) model
+
 from integrator import Integrator
 from sgy_neuron import SGY_neuron
 from sgy_params import reference_set
