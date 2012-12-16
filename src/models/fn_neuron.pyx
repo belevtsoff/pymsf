@@ -1,3 +1,5 @@
+# Fitzhugh-Nagumo model of a simple 2D relaxation oscillator.
+
 from integrator cimport Model
 cimport cython
 
