@@ -14,8 +14,6 @@ cdef class FN_neuron(Model):
         for key, value in parameters.items():
             setattr(self.par, key, value)
     
-    @cython.boundscheck(False)
-    @cython.wraparound(False)
     cdef void compute_dx(self, double[:] x, double[:] out_dx):
         out_dx[0] = x[0] - x[0] ** 3 / 3 - x[1] + self.par.I_app
         out_dx[1] = self.par.phi * (x[0] + 0.7 - 0.8 * x[1])
