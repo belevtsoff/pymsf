@@ -2,12 +2,12 @@
 # stores the last full period
 
 #TODO:
-# - limit cycle search
 # - protection against uninitialized parameters
 
 cimport numpy as np
 import numpy as np
 cimport cython
+from base_model cimport Model
 
 
 @cython.boundscheck(False)
@@ -25,7 +25,7 @@ cdef class Integrator:
         self.model = model
         self.tmax = tmax
         self.dt = dt
-        self.n_iter = <int>(tmax / dt)
+        self.n_iter = int(tmax / dt)
         self.data = np.empty((model.ndim, self.n_iter + 1), dtype = np.double)
         self.dx = np.empty(model.ndim, dtype = np.double)
     
@@ -53,9 +53,9 @@ cdef class Integrator:
                 data[j, i + 1] = data[j, i] + dx[j] * self.dt
 
             if (data[test_var_idx, i] <= test_var_thr) & (data[test_var_idx, i + 1] > test_var_thr):
-                
                 # safe to use numpy because this is only called once per burst
                 dev = np.linalg.norm(self.data[:, start_idx] - data[:, i + 1])
+                print dev
                 
                 if dev < dev_thr:
                     break
@@ -64,14 +64,17 @@ cdef class Integrator:
 
         return start_idx, i + 1
 
+    def integrate(self):
+        cdef int i, j
+        cdef double[:, :] data
+        cdef double[:] dx
 
+        data = self.data
+        dx = self.dx
 
-cdef class Model:
-    '''Simplest possible model. It serves as an abstract class to be
-    inherited by other model classes'''
+        for i in range(self.n_iter):
+            self.model.compute_dx(data[:, i], dx)
 
-    def __cinit__(self):
-        self.ndim = 1
-
-    cdef void compute_dx(self, double[:] x, double[:] out_dx):
-        out_dx[0] = 0.0
+            # Euler integration step
+            for j in range(self.model.ndim):
+                data[j, i + 1] = data[j, i] + dx[j] * self.dt

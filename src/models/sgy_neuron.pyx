@@ -1,12 +1,12 @@
 # self-coupled SGY neuron model (Golomb 2006). With reference parameters
 # exhibits intrinsic bursting behaviour
 
-from integrator cimport *
+from base_model cimport Model
 cimport cython
 
 cdef class SGY_neuron(Model):
     # currents and gating variables
-    cdef double I_na, I_nap, I_kdr, I_kslow, I_l, I_ampa, I_nmda
+    cdef double I_na, I_nap, I_kdr, I_kslow, I_l, I_ampa, I_nmda, I_app
     cdef double m_inf, h_inf, p_inf, n_inf, z_inf, s_inf
     cdef double tau_h, tau_n
 

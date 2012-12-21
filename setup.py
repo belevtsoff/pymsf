@@ -4,9 +4,9 @@ from Cython.Distutils import build_ext
 import os
 
 ext_modules = [
-               Extension("integrator", ["src/integrator.pyx"]),
-               Extension("fn_neuron", ["src/models/fn_neuron.pyx"], include_dirs=['src']),
-               Extension("sgy_neuron", ["src/models/sgy_neuron.pyx"], include_dirs=['src'])
+               Extension("integrator", ["src/integrator.pyx"], include_dirs=['src/models']),
+               Extension("base_model", ["src/models/base_model.pyx"]),
+               Extension("sgy_neuron", ["src/models/sgy_neuron.pyx"])
                ]
 
 setup(
