@@ -1,10 +1,22 @@
-lc-trajectory
-=============
+PyMSF
+=====
 
-An efficient routine to find and store a limit cycle trajectory of a self-coupled neuron
+A python library containig various routines for computing MSF, Master Stability Function (Pecora & Carroll, 1998).
+The library is implemented in Cython for speed and seamless python integration.
 
-Implemented in Cython for speed and Python compatibility
+Currently implemented tools allow:
+* model integration (euler, rk2, rk4)
+* extracting one limit-cycle period after it settled
+* computing Floquet numbers of the MSF along a trajectory
+
+Deps:
+* numpy
+* Cython >= 0.18
 
 To build the modules, run:
 
     python2 setup.py build_ext --inplace
+
+To run scripts, add the repo to your $PYTHONPATH. 
+
+Currently, there are no docs and only a couple of docstrings, so you're on your own, good luck!
