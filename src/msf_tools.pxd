@@ -5,42 +5,42 @@ cdef extern from "cblas.h":
         CblasNoTrans
 
     void cblas_zcopy(
-                        int N,
-                        void *X,
-                        int incX,
+                        const int N,
+                        const void *X,
+                        const int incX,
                         void *Y,
-                        int incY
+                        const int incY
                     )
 
     void cblas_zaxpy(
-                        int N,
-                        void *alpha,
-                        void *X,
-                        int incX,
+                        const int N,
+                        const void *alpha,
+                        const void *X,
+                        const int incX,
                         void *Y,
-                        int incY
+                        const int incY
                     )
 
     void cblas_zgemm(
-                        CBLAS_ORDER Order,
-                        CBLAS_TRANSPOSE TransA,
-                        CBLAS_TRANSPOSE TransB,
-                        int M,
-                        int N,
-                        int K,
-                        void *alpha,
-                        void *A,
-                        int lda,
-                        void *B,
-                        int ldb,
-                        void *beta,
+                        const CBLAS_ORDER Order,
+                        const CBLAS_TRANSPOSE TransA,
+                        const CBLAS_TRANSPOSE TransB,
+                        const int M,
+                        const int N,
+                        const int K,
+                        const void *alpha,
+                        const void *A,
+                        const int lda,
+                        const void *B,
+                        const int ldb,
+                        const void *beta,
                         void *C,
-                        int ldc
+                        const int ldc
                     )    
 
     void cblas_zdscal(
-                        int N,
-                        double alpha,
+                        const int N,
+                        const double alpha,
                         void *X,
-                        int incX
+                        const int incX
                     )

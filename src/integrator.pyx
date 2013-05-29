@@ -3,19 +3,9 @@
 #cython: cdivision=True
 
 import numpy as np
-cimport numpy as np
-cimport cython
-from base_model cimport Model
 
 
 cdef class Integrator:
-    cdef Model model
-    cdef double dt
-    cdef int n_iter
-
-    # allocate all temporaty storage arrays
-    cdef readonly np.ndarray data
-
     def __init__(self, Model model, double tmax, double dt):
         self.model = model
         self.dt = dt
@@ -43,6 +33,8 @@ cdef class Integrator:
 
         self._integrate_model(t, check_deviation, &args)
 
+        return args.start_idx, args.end_idx
+
     def set_initial_conditions(self, vector):
         self.data[:, 0] = vector
 
@@ -50,7 +42,7 @@ cdef class Integrator:
 
     cdef void _integrate_model(self,
             const IntegrationType it,
-            Callback_t callback,
+            const Callback_t callback,
             void *user_data):
 
         cdef int i
@@ -78,10 +70,10 @@ cdef class Integrator:
 
             elif it == RK2:
                 self._rk_step(x, x, k1, tmp, 0.0)
-                self._rk_step(x, k1, k2, tmp, 1.0)
+                self._rk_step(x, k1, k2, tmp, 0.5)
 
                 for j in range(self.model.ndim):
-                    data[j, i + 1] = data[j, i] + (k1[j] + k2[j]) / 2.0
+                    data[j, i + 1] = data[j, i] + k2[j]
 
             elif it == RK4:
                 self._rk_step(x, x, k1, tmp, 0.0)
@@ -110,7 +102,6 @@ cdef class Integrator:
 
         for j in range(self.model.ndim):
             k_out[j] = self.dt * k_out[j]
-
 
 
 
