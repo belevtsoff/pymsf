@@ -7,7 +7,7 @@ The library is implemented in Cython for speed and seamless python integration.
 Currently implemented tools allow:
 * model integration (euler, rk2, rk4)
 * extracting one limit-cycle period after it settled
-* computing Floquet numbers of the MSF along a trajectory
+* computing Floquet numbers of the MSF along a trajectory (only Euler integration atm)
 
 Deps:
 * numpy
