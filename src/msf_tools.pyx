@@ -45,8 +45,7 @@ cdef class MSF_Integrator:
             
             double max_diff = 1e-4,
             int max_iter = <int>1e4,
-            int n = 100
-            ):
+            int n = 100):
 
         # declarations
         cdef int i, iteration # counters
@@ -124,67 +123,6 @@ cdef void compute_les(
 
     # reorthogonalize by generating Q
     LAPACKE_zungqr(LAPACK_ROW_MAJOR, ndim, ndim, ndim, &X[i, 0, 0], ndim, &ACC[0, 0])
-
-
-#cdef void compute_les(
-        #int i,
-        #int iteration,
-        #double epsilon,
-        #double deltat,
-        #complex[:, :, :] X,
-        #complex[:, :] ACC,
-        #double[:, :] lambdas):
-
-    #cdef int icol
-    #cdef int ndim = X.shape[1]
-    ##cdef double norm
-
-    ## Compute LE's and reorthonormalize X using QR factorization
-
-    ## get post-GSR norms via QR factorization
-    ## X <- QR
-    ## ACC (first row) <- tau
-    #LAPACKE_zgeqrf(LAPACK_ROW_MAJOR, ndim, ndim, &X[i, 0, 0], ndim, &ACC[0, 0])
-
-    ## calculate LE's
-    #for icol in range(ndim):
-        #lambdas[icol, iteration] = log(fabs(X[i, icol, icol].real) / epsilon) / deltat
-
-    ## reorthogonalize by generating Q and scaling it with epsilon
-    ## X <- epsilon * Q
-    #LAPACKE_zungqr(LAPACK_ROW_MAJOR, ndim, ndim, ndim, &X[i, 0, 0], ndim, &ACC[0, 0])
-
-def test_qr():
-    cdef int i
-    cdef int ndim = 3
-
-    np_X = np.random.random((ndim, ndim)).astype('complex')
-    np_Q = np_X.copy()
-    np_norms = np.empty(ndim).astype('complex')
-    cdef complex[:] norms = np_norms
-    cdef complex[:, ::1] Q = np_Q
-    cdef complex[:, ::1] ACC = np.empty((ndim, ndim)).astype('complex')
-
-    LAPACKE_zgeqrf(LAPACK_ROW_MAJOR, ndim, ndim, &Q[0, 0], ndim, &ACC[0, 0])
-
-    for i in range(ndim):
-        norms[i] = Q[i, i]
-
-    LAPACKE_zungqr(LAPACK_ROW_MAJOR, ndim, ndim, ndim, &Q[0, 0], ndim, &ACC[0, 0])
-
-    return np_X, np_Q, np_norms
-
-
-
-#    # for every column of X
-    #for icol in range(ndim):
-        ## compute its norm
-        #norm = cblas_dznrm2(ndim, &X[i, 0, icol], ndim)
-        ## write corresponding LE
-        #lambdas[icol, iteration] = log(norm / epsilon) / deltat
-        ## renormalize
-        #for irow in range(ndim):
-#            X[i, irow, icol] = X[i, irow, icol] * epsilon / norm
 
 
 cdef void compute_labmda_diff():

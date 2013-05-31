@@ -54,15 +54,6 @@ cdef extern from "cblas.h":
                         const int incX
                        )
 
-#cdef extern from "clapack.h":
-    #int clapack_zgeqrf(
-                        #const enum CBLAS_ORDER Order,
-                        #const int M,
-                        #const int N,
-                        #void *A,
-                        #const int lda,
-                        #void *TAU
-                      #)
 
 cdef extern from "lapacke.h":
     int LAPACK_ROW_MAJOR
@@ -86,5 +77,6 @@ cdef extern from "lapacke.h":
                        const complex *tau
                       )
 
-    cdef extern from "complex.h":
-        double creal(complex z)
+
+cdef extern from "complex.h":
+    double creal(complex z)
