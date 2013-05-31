@@ -51,7 +51,7 @@ def timeit(closure, n):
     #return np.sort(np.abs(evals))[::-1]
 
 def lyap(gamma, dt, traj):
-    return msfi.compute_Lyapunov(gamma, dt, traj, n=100, max_iter=1e5, epsilon=1)
+    return msfi.compute_Lyapunov(gamma, dt, traj, n=100, max_iter=1e5)#, epsilon=1)
 
 print('Computing trajectory...\n')
 idx1, idx2 = i.find_limit_cycle(1e-5, 0, -1.4, methods.EULER)

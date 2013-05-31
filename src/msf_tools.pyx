@@ -43,7 +43,6 @@ cdef class MSF_Integrator:
             double dt,
             np.ndarray[double, ndim=2] np_traj,
             
-            double epsilon = 0.1,
             double max_diff = 1e-4,
             int max_iter = <int>1e4,
             int n = 100
@@ -78,8 +77,7 @@ cdef class MSF_Integrator:
         ACC = np.zeros((ndim, ndim), dtype = np.complex)
 
         # set X(0) = I
-        self.X[0, :, :] = np.eye(ndim) * epsilon
-        #self.X[0, :, :] = np.eye(ndim) * epsilon
+        self.X[0, :, :] = np.eye(ndim)
 
         # main loop
         while lambda_diff > max_diff and iteration < max_iter:
@@ -88,7 +86,7 @@ cdef class MSF_Integrator:
 
                 # compute LE's every n steps
                 if not i % n:
-                    compute_les(i + 1, iteration, epsilon, dt*n, X, ACC, lambdas)
+                    compute_les(i + 1, iteration, dt*n, X, ACC, lambdas)
                     iteration += 1
 
                 if iteration >= max_iter:
@@ -100,19 +98,11 @@ cdef class MSF_Integrator:
 
         return np_lambdas
 
-    def test_qr(self):
-        return test_qr()
-
-
-
-
-
 # C functions
 
 cdef void compute_les(
         int i,
         int iteration,
-        double epsilon,
         double deltat,
         complex[:, :, :] X,
         complex[:, :] ACC,
@@ -130,13 +120,10 @@ cdef void compute_les(
 
     # calculate LE's
     for icol in range(ndim):
-        lambdas[icol, iteration] = log(fabs(X[i, icol, icol].real) / epsilon) / deltat
+        lambdas[icol, iteration] = log(fabs(X[i, icol, icol].real)) / deltat
 
-    # reorthogonalize by generating Q and scaling it with epsilon
-    # X <- epsilon * Q
+    # reorthogonalize by generating Q
     LAPACKE_zungqr(LAPACK_ROW_MAJOR, ndim, ndim, ndim, &X[i, 0, 0], ndim, &ACC[0, 0])
-    cblas_zdscal(ndim ** 2, epsilon, &X[i, 0, 0], 1)
-    
 
 
 #cdef void compute_les(
