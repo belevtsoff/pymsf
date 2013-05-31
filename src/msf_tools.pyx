@@ -7,7 +7,7 @@ import numpy as np
 cimport cython
 from base_model cimport Model
 
-from libc.math cimport log, fabs, sqrt
+from libc.math cimport log, fabs
 
 
 cdef class MSF_Integrator:
@@ -120,7 +120,7 @@ cdef void compute_les(
 
     # calculate LE's
     for icol in range(ndim):
-        lambdas[icol, iteration] = log(fabs(X[i, icol, icol].real)) / deltat
+        lambdas[icol, iteration] = log(fabs(creal(X[i, icol, icol]))) / deltat
 
     # reorthogonalize by generating Q
     LAPACKE_zungqr(LAPACK_ROW_MAJOR, ndim, ndim, ndim, &X[i, 0, 0], ndim, &ACC[0, 0])

@@ -85,3 +85,6 @@ cdef extern from "lapacke.h":
                        int lda,
                        const complex *tau
                       )
+
+    cdef extern from "complex.h":
+        double creal(complex z)
