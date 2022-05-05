@@ -2,6 +2,7 @@ from distutils.core import setup
 from distutils.extension import Extension
 from Cython.Distutils import build_ext
 import Cython.Compiler.Options as o
+import numpy as np
 
 o.annotate = True
 
@@ -18,6 +19,7 @@ ext_modules = [
 setup(
   name='Limit cycle search',
   cmdclass={'build_ext': build_ext},
-  ext_modules=ext_modules
+  ext_modules=ext_modules,
+  include_dirs=[np.get_include()]
 )
 
